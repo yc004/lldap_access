@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  backend:
+    build: ./server
+    container_name: lldap-manager-backend
+    restart: unless-stopped
+    volumes:
+      - ./server/data:/app/data
+    environment:
+      - PORT=3000
+  
+  frontend:
+    build: ./client
+    container_name: lldap-manager-frontend
+    restart: unless-stopped
+    ports:
+      - "8563:80"
+    depends_on:
+      - backend
+
+# Note: The lldap service is assumed to be running externally.
+# Ensure that the backend can access the LLDAP server (e.g., via IP address).
